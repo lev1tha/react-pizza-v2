@@ -2,8 +2,9 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 import logoSvg from '../assets/img/pizza-logo.svg'
+import Search from './Search/'
 
-function Header() {
+function Header({inputChanged,setInputChanged}) {
   return (
     <div>
       <div className="header">
@@ -17,6 +18,7 @@ function Header() {
             </div>
           </div>
           </Link>
+          <Search inputChanged={inputChanged} setInputChanged={setInputChanged}/>
           <div className="header__cart">
             <Link to="/cart" className="button button--cart">
               <span>520 сом</span>
