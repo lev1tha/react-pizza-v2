@@ -1,16 +1,16 @@
 import React from 'react'
 import ReactPaginate from "react-paginate";
 
-import style from './pogination.module.scss'
+import styles from './pogination.module.scss'
 
-const Pogination = () => {
+const Pogination = ({onPageChange}) => {
   return (
     <ReactPaginate
-    className={style.root}
+    className={styles.root}
     breakLabel="..."
     nextLabel=">"
-    onPageChange={(event)=>console.log(event)}
-    pageRangeDisplayed={8}
+    onPageChange={(event)=> onPageChange(event.selected + 1)}
+    pageRangeDisplayed={4}
     pageCount={3}
     previousLabel="<"
     renderOnZeroPageCount={null}

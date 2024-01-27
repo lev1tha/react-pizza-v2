@@ -1,9 +1,11 @@
-import React from "react";
-import Search from "../../assets/img/search_icons.svg";
+import { React, useContext } from "react";
 
 import style from "./index.module.scss";
+import { SearchContext } from "../../App";
 
-export default function index({ inputChanged, setInputChanged }) {
+function SearchPage() {
+  const { inputChanged, setInputChanged } = useContext(SearchContext);
+
   return (
     <div className={style.root}>
       <svg className={style.icons} viewBox="0 0 32 32">
@@ -21,7 +23,7 @@ export default function index({ inputChanged, setInputChanged }) {
       />
       {inputChanged && (
         <svg
-          onClick={()=> setInputChanged("")}
+          onClick={() => setInputChanged("")}
           className={style.clear}
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -32,3 +34,5 @@ export default function index({ inputChanged, setInputChanged }) {
     </div>
   );
 }
+
+export default SearchPage
