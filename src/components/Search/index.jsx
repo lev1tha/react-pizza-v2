@@ -1,10 +1,40 @@
-import { React, useContext } from "react";
+import {
+  React,
+  useState,
+  useContext,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
+
+import debounce from "lodash.debounce";
 
 import style from "./index.module.scss";
+
 import { SearchContext } from "../../App";
 
 function SearchPage() {
+  const [value, setValue] = useState();
   const { inputChanged, setInputChanged } = useContext(SearchContext);
+  const inputRef = useRef();
+
+  const onClickClear = () => {
+    setInputChanged("");
+    setValue("")
+    inputRef.current.focus();
+  };
+
+  const updateSearchValue = useCallback(
+    debounce((str) => {
+      setInputChanged(str);
+    }, 250),
+    []
+  );
+
+  const onChangeInput = (event) => {
+    setValue(event.target.value);
+    updateSearchValue(event.target.value);
+  };
 
   return (
     <div className={style.root}>
@@ -15,15 +45,16 @@ function SearchPage() {
         </g>
       </svg>
       <input
-        value={inputChanged}
-        onChange={(event) => setInputChanged(event.target.value)}
+        ref={inputRef}
+        value={value}
+        onChange={onChangeInput}
         className={style.input}
         type="text"
         placeholder="Поиск пиццы ..."
       />
-      {inputChanged && (
+      {value && (
         <svg
-          onClick={() => setInputChanged("")}
+          onClick={() => onClickClear()}
           className={style.clear}
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -35,4 +66,4 @@ function SearchPage() {
   );
 }
 
-export default SearchPage
+export default SearchPage;

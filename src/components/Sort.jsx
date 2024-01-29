@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSort } from "../redux/slices/filterSlice";
 
-const list = [
+export const sortList = [
   { name: "популярности(DESC)", sortPropperty: `raiting` },
   { name: "популярности(ASC)", sortPropperty: `-raiting` },
   { name: "цене(DESC)", sortPropperty: "price" },
@@ -14,6 +14,7 @@ const list = [
 function Sort() {
   const dispatch = useDispatch();
   const sort = useSelector((state) => state.filter.sort);
+  const sortRef = useRef();
 
   const [open, setOpen] = useState(false);
 
@@ -21,9 +22,24 @@ function Sort() {
     dispatch(setSort(i));
     setOpen(!open);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      var path = event.composedPath ? event.composedPath() : event.path;
+
+      if (!path.includes(sortRef.current)) {
+        setOpen(false);
+      }
+    };
+
+    document.body.addEventListener("click", handleClickOutside);
+
+    return () => document.body.removeEventListener("click", handleClickOutside);
+  }, []);
+
   return (
     <>
-      <div className="sort">
+      <div ref={sortRef} className="sort">
         <div className="sort__label">
           <svg
             width="10"
@@ -43,7 +59,7 @@ function Sort() {
         {open && (
           <div className="sort__popup">
             <ul>
-              {list.map((obj, index) => (
+              {sortList.map((obj, index) => (
                 <li
                   key={index}
                   onClick={() => onClickItem(obj)}
